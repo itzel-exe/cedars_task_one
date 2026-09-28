@@ -1,0 +1,488 @@
+> source("C:/Users/Itzel/Desktop/assignment_one/analysis.R")
+
+============================================================
+1. MASTER VARIABLE DATASET
+============================================================
+Importing master variable dataset (xlsx).
+Displaying master variable dataset.                                      
+Press [Enter] to continue ...
+The master variable dataset has 2 fields.
+              col_no      variable      type
+variable name      1 variable name character
+notes              2         notes character
+# A tibble: 354 × 2
+   `variable name` notes
+   <chr>           <chr>
+ 1 master_id       NA   
+ 2 date            NA   
+ 3 visit           NA   
+ 4 visit2          NA   
+ 5 dose            NA   
+ 6 source          NA   
+ 7 perm_date       NA   
+ 8 order           NA   
+ 9 last_date       NA   
+10 last_dose       NA   
+# ℹ 344 more rows
+# ℹ Use `print(n = ...)` to see more rows
+Press [Enter] to continue ...
+Checking for notes attached to variable names.
+# A tibble: 19 × 2
+   `variable name` notes                                   
+   <chr>           <chr>                                   
+ 1 sbp_v2          systolic blood pressure at visit 2      
+ 2 dbp_v2          distolic blood pressure at visit 2      
+ 3 pot_v2          potassium (aka 'k') at visit 2          
+ 4 crea_v2         creatinine (aka 'cr') at visit 2        
+ 5 rand_dt         randomization                           
+ 6 chf_hosp        congestive heart failure hospitalization
+ 7 mi              myocardial infarction                   
+ 8 htn             hypertension                            
+ 9 dm              diabetes mellitus                       
+10 insulin         insulin treatment for diabetes          
+11 oral            oral medications for diabetes           
+12 diet            diet treated for diabetes               
+13 hr              heart rate                              
+14 sbp             systolic blood pressure                 
+15 dbp             diastolic blood pressure                
+16 bmi             body mass index                         
+17 k               potassium                               
+18 cr              creatinine                              
+19 region          region                                  
+Press [Enter] to continue ...
+There are multiple values that can represent potassium levels.
+Keyword search on 'pot', 'k', 'potassium', 'hyperkalemia' in the variable names:
+Press [Enter] to continue ...
+There appear to be multiple potassium values from different visits,
+as shown by the note: potassium (aka 'k') at visit 2.
+This cannot be confirmed, and the prompt states the analysis should use the
+potassium values 'k' from the Adverse and Lab datasets.
+Potassium values not explicitly labeled 'k' are therefore excluded.
+Press [Enter] to continue ...
+
+============================================================
+2. MASTER DATA DATASET
+============================================================
+Importing master data (csv).
+Displaying master data.
+Press [Enter] to continue observation...
+There are 3445 individuals in this dataset.
+Duplicate individuals (master_id): FALSE.
+Duplicate variable names: FALSE.
+Press [Enter] to continue observation...
+Fields of interest in the master data:
+master_id is of type integer.
+treat is of type integer.
+region is of type integer.
+Displaying the fields of interest.
+Press [Enter] to continue ...
+------------------------------------------------------------ 
+The field treat has 2 unique value(s): 1, 0.
+Press [Enter] to continue ...
+------------------------------------------------------------ 
+The field region has 2 unique value(s): 1, 2.
+Press [Enter] to continue ...
+------------------------------------------------------------ 
+For a binary analysis, region values will be recoded to 0/1.
+Converting region values of 2 to 0 and leaving 1 as is...
+The field region now has the unique value(s): 1, 0.
+Displaying the updated region values.
+Press [Enter] to continue ...
+
+============================================================
+3. ADVERSE DATASET
+============================================================
+Importing Adverse dataset (csv).
+Displaying Adverse dataset.
+Press [Enter] to continue observation
+There are 2365 records in the Adverse dataset.
+It is TRUE that master_id has duplicate values.
+------------------------------------------------------------ 
+'data.frame':	2365 obs. of  16 variables:
+ $ form       : chr  "T05X" "T05X" "T05X" "T05X" ...
+ $ test_type  : chr  "cREATININE" "POTASSIUM" "cREATININE" "POTASSIUM" ...
+ $ test_result: chr  "2.0" "4.9" "2.0" "4.9" ...
+ $ test_units : chr  "MG/DL" "MEQ/l" "MG/DL" "MEQ/l" ...
+ $ master_id  : int  10010025 10010025 10010025 10010025 10010051 10010051 10010051 10010051 10010051 10010051 ...
+ $ sae_report : int  1 1 2 2 2 2 1 1 1 1 ...
+ $ sae_num    : int  2 2 2 2 1 1 12 12 14 14 ...
+ $ onset_dt   : chr  "04/25/2007" "04/25/2007" "04/25/2007" "04/25/2007" ...
+ $ labdate    : chr  "4/25/2007" "4/25/2007" "4/25/2007" "4/25/2007" ...
+ $ test_res   : num  2 4.9 2 4.9 0.8 4.5 1.2 5.2 1.2 5.2 ...
+ $ cr         : num  2 NA 2 NA 0.8 NA 1.2 NA 1.2 NA ...
+ $ k          : num  NA 4.9 NA 4.9 NA 4.5 NA 5.2 NA 5.2 ...
+ $ aemonth    : int  4 4 4 4 3 3 6 6 2 2 ...
+ $ aeday      : int  25 25 25 25 5 5 7 7 23 23 ...
+ $ aeyr       : int  2007 2007 2007 2007 2008 2008 2008 2008 2011 2011 ...
+ $ aedate     : chr  "04/25/2007" "04/25/2007" "04/25/2007" "04/25/2007" ...
+Press [Enter] to continue ...
+Keeping only individuals and their potassium values.
+Press [Enter] to continue ...
+
+============================================================
+4. LAB DATASET
+============================================================
+Importing Lab dataset (csv).
+Displaying Lab dataset.
+There are 41437 records in the Lab dataset.
+It is TRUE that master_id has duplicate values.
+------------------------------------------------------------ 
+Structure of the Lab dataset:
+'data.frame':	41437 obs. of  23 variables:
+ $ master_id   : int  10450015 16690019 16690019 16690019 10450015 10450015 13460019 10450015 16690019 32050013 ...
+ $ sub_init    : chr  "CWD" "MMH" "MMH" "MMH" ...
+ $ visit       : chr  "BASE" "BASE" "WK04" "WK04" ...
+ $ labs_yn     : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ labs_dt     : chr  "8/17/2006" "8/17/2006" "9/7/2006" "9/14/2006" ...
+ $ labs_dose   : int  0 0 0 1 1 0 1 0 0 0 ...
+ $ na_unit     : int  2 1 1 1 2 2 1 2 1 2 ...
+ $ na          : int  144 140 140 142 143 145 138 140 141 138 ...
+ $ k_unit      : int  2 1 1 1 2 2 1 2 1 2 ...
+ $ k           : num  4.4 4.1 4 4.1 4.8 4.6 4 5.3 4.1 4.9 ...
+ $ cl_unit     : int  2 1 1 1 2 2 1 2 1 2 ...
+ $ cl          : int  104 103 104 106 105 105 104 104 103 104 ...
+ $ co2_unit    : int  2 1 1 1 2 2 1 2 1 NA ...
+ $ co2         : int  30 28 27 27 29 29 30 29 26 NA ...
+ $ bun_unit    : int  1 1 1 1 1 1 1 1 1 2 ...
+ $ bun         : num  35 13 12 13 30 38 15 48 17 5.2 ...
+ $ cr_unit     : int  1 1 1 1 1 1 1 1 1 2 ...
+ $ cr          : num  1.6 0.8 0.8 0.8 1.5 1.5 0.9 1.6 1.1 93 ...
+ $ chng_dose   : int  0 0 1 0 0 1 0 0 0 0 ...
+ $ formstat_id : int  9727 9744 10293 10304 10317 10318 10567 10667 10674 10773 ...
+ $ destatus    : chr  "C" "C" "C" "C" ...
+ $ statusofform: chr  "C" "C" "C" "C" ...
+ $ sigstatus   : int  2 2 2 2 2 2 2 2 2 2 ...
+Keeping only the fields of interest.
+Press [Enter] to continue ...
+Both the Adverse and Lab datasets have multiple records per individual.
+
+============================================================
+5. BINARY HYPERKALEMIA FLAGS
+============================================================
+Region was converted to a binary marker earlier.
+Next, a hyperkalemia flag is set on every Lab and Adverse record,
+then collapsed to one row per individual.
+Flagging Lab records.
+Press [Enter] to continue ...
+Collapsing Lab data to one row per individual (1 = ever experienced hyperkalemia).
+Displaying the collapsed Lab data.
+Press [Enter] to continue ...
+------------------------------------------------------------ 
+Repeating the same process for the Adverse dataset.
+Binary markers added. Displaying the flagged Adverse data.
+Press [Enter] to continue ...
+Collapsing Adverse data to one row per individual.
+Displaying the collapsed Adverse data.
+Press [Enter] to continue ...
+------------------------------------------------------------ 
+Checking the collapsed datasets for duplicate individuals.
+Lab: 
+It is FALSE that master_id has duplicate values.
+Adverse: 
+It is FALSE that master_id has duplicate values.
+Press [Enter] to continue ...
+
+============================================================
+6. QUALITY CHECKS
+============================================================
+Three random individuals from each dataset will be checked.
+Expected: 0 = never experienced hyperkalemia, 1 = experienced.
+Press [Enter] to continue ...
+Lab dataset checks
+Check 1
+------------------------------------------------------------ 
+Record(s) for individual 32050378 found in the Lab dataset:
+------------------------------------------------------------ 
+      master_id   k lab_result
+4447   32050378 4.6          0
+5002   32050378 5.0          0
+5003   32050378 4.8          0
+5444   32050378 4.8          0
+7052   32050378 5.0          0
+9055   32050378 5.0          0
+11265  32050378 5.1          0
+14561  32050378 5.1          0
+17837  32050378 5.1          0
+21667  32050378 5.1          0
+24516  32050378 4.8          0
+28595  32050378 4.8          0
+33253  32050378 4.8          0
+36617  32050378 4.6          0
+38748  32050378 4.9          0
+------------------------------------------------------------ 
+The binary result for individual 32050378 is 0 - they have not experienced hyperkalemia.
+Press [Enter] to continue ...
+Check 2
+------------------------------------------------------------ 
+Record(s) for individual 17860148 found in the Lab dataset:
+------------------------------------------------------------ 
+      master_id   k lab_result
+19687  17860148 5.1          0
+19689  17860148 4.4          0
+20294  17860148 4.6          0
+22177  17860148 4.3          0
+24757  17860148 3.8          0
+------------------------------------------------------------ 
+The binary result for individual 17860148 is 0 - they have not experienced hyperkalemia.
+Press [Enter] to continue ...
+Check 3
+------------------------------------------------------------ 
+Record(s) for individual 17890177 found in the Lab dataset:
+------------------------------------------------------------ 
+      master_id   k lab_result
+11020  17890177 3.9          0
+14602  17890177 4.0          0
+14603  17890177 3.2          0
+14604  17890177 3.3          0
+14605  17890177 3.6          0
+17378  17890177  NA          0
+17379  17890177 3.1          0
+20542  17890177 3.3          0
+21600  17890177  NA          0
+26288  17890177 3.5          0
+30914  17890177 3.7          0
+32251  17890177 3.4          0
+35665  17890177 3.5          0
+35666  17890177 3.8          0
+38375  17890177  NA          0
+------------------------------------------------------------ 
+The binary result for individual 17890177 is 0 - they have not experienced hyperkalemia.
+Press [Enter] to continue ...
+Lab sample check is complete.
+Adverse dataset checks
+Check 1
+------------------------------------------------------------ 
+Record(s) for individual 31140316 found in the Adverse dataset:
+------------------------------------------------------------ 
+     master_id    k adverse_result
+1612  31140316 4.40              0
+1613  31140316 5.30              0
+1614  31140316   NA              0
+1615  31140316 4.74              0
+------------------------------------------------------------ 
+The binary result for individual 31140316 is 0 - they have not experienced hyperkalemia.
+Press [Enter] to continue ...
+Check 2
+------------------------------------------------------------ 
+Record(s) for individual 31201304 found in the Adverse dataset:
+------------------------------------------------------------ 
+     master_id   k adverse_result
+2047  31201304  NA              0
+2048  31201304 4.3              0
+2049  31201304  NA              0
+2050  31201304  NA              0
+2051  31201304 4.6              0
+------------------------------------------------------------ 
+The binary result for individual 31201304 is 0 - they have not experienced hyperkalemia.
+Press [Enter] to continue ...
+Check 3
+------------------------------------------------------------ 
+Record(s) for individual 32080268 found in the Adverse dataset:
+------------------------------------------------------------ 
+     master_id  k adverse_result
+2223  32080268  5              0
+2224  32080268 NA              0
+2225  32080268  5              0
+2226  32080268 NA              0
+------------------------------------------------------------ 
+The binary result for individual 32080268 is 0 - they have not experienced hyperkalemia.
+Press [Enter] to continue ...
+Adverse sample check is complete.
+Press [Enter] to continue ...
+
+============================================================
+7. OUTPUT DATASET
+============================================================
+The output dataset holds each individual's id, treatment, region,
+and whether they experienced hyperkalemia.
+Setting missing markers to 0 (never flagged).
+Determining the final binary outcome (1 if flagged in Lab OR Adverse).
+------------------------------------------------------------ 
+Checked master_id = 31170080 
+lab_result = 0 | adverse_result = 0 | result = 0 
+This result is right
+------------------------------------------------------------ 
+Checked master_id = 31380302 
+lab_result = 0 | adverse_result = 0 | result = 0 
+This result is right
+------------------------------------------------------------ 
+Checked master_id = 18530102 
+lab_result = 1 | adverse_result = 0 | result = 1 
+This result is right
+------------------------------------------------------------ 
+Comparing row counts of the Output and Master Data datasets.
+Both datasets have the same number of records (3445).
+Press [Enter] to continue ...
+
+============================================================
+8. RISK BY TREATMENT ARM
+============================================================
+         Hyperkalemia
+Treatment    0    1
+        0 1566  157
+        1 1400  322
+         Hyperkalemia
+Treatment     0     1
+        0 0.909 0.091
+        1 0.813 0.187
+Hyperkalemia risk by treatment arm:
+  treat = 0: 9.1%
+  treat = 1: 18.7%
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+data:  cross_table
+X-squared = 65.329, df = 1, p-value = 6.338e-16
+
+Note: the chi-square p-value is 6.34e-16. A very small p-value means the difference in risk between arms is unlikely to be due to chance.
+Press [Enter] to continue ...
+
+============================================================
+9. LOGISTIC REGRESSION
+============================================================
+Null model: overall hyperkalemia rate, ignoring treatment.
+
+Call:
+glm(formula = result ~ 1, family = binomial, data = output_df)
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -1.82327    0.04924  -37.03   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 2778.2  on 3444  degrees of freedom
+Residual deviance: 2778.2  on 3444  degrees of freedom
+AIC: 2780.2
+
+Number of Fisher Scoring iterations: 4
+
+Overall hyperkalemia rate: 13.9% (drug and placebo combined).
+Press [Enter] to continue ...
+------------------------------------------------------------ 
+Treatment model: adds treatment as a predictor.
+
+Call:
+glm(formula = result ~ treat, family = binomial, data = output_df)
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -2.30003    0.08371  -27.48  < 2e-16 ***
+treat        0.83036    0.10406    7.98 1.47e-15 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 2778.2  on 3444  degrees of freedom
+Residual deviance: 2710.9  on 3443  degrees of freedom
+AIC: 2714.9
+
+Number of Fisher Scoring iterations: 5
+
+Hyperkalemia rate in the reference group: 9.1%.
+Exponentiated coefficients (baseline odds and odds ratio):
+(Intercept)       treat 
+  0.1002554   2.2941401 
+The odds ratio is how many times higher the odds of hyperkalemia are in the treated group than in the reference group.
+95% confidence intervals for the odds ratios:
+Waiting for profiling to be done...
+                 2.5 %    97.5 %
+(Intercept) 0.08476275 0.1177111
+treat       1.87408649 2.8186964
+If the interval for 'treat' excludes 1, the treatment is associated with a statistically significant change in the odds of hyperkalemia.
+Press [Enter] to continue ...
+Likelihood-ratio test: does adding treatment improve on the null model?
+Analysis of Deviance Table
+
+Model 1: result ~ 1
+Model 2: result ~ treat
+  Resid. Df Resid. Dev Df Deviance  Pr(>Chi)    
+1      3444     2778.2                          
+2      3443     2710.9  1   67.313 2.316e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+A very small p-value means treatment explains hyperkalemia better than the overall rate alone.
+Press [Enter] to continue ...
+
+============================================================
+10. TREATMENT x REGION
+============================================================
+Counts of individuals by treatment and region:
+         Region
+Treatment   0   1
+        0 842 881
+        1 836 886
+Row proportions (region mix within each treatment arm):
+         Region
+Treatment     0     1
+        0 0.489 0.511
+        1 0.485 0.515
+Press [Enter] to continue ...
+Additive model (treat + region):
+
+Call:
+glm(formula = result ~ treat + region, family = binomial, data = output_df)
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  -2.6158     0.1055 -24.803  < 2e-16 ***
+treat         0.8358     0.1045   7.998 1.27e-15 ***
+region        0.5563     0.1024   5.432 5.57e-08 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 2778.2  on 3444  degrees of freedom
+Residual deviance: 2680.6  on 3442  degrees of freedom
+AIC: 2686.6
+
+Number of Fisher Scoring iterations: 5
+
+Press [Enter] to continue ...
+Interaction model (treat * region):
+
+Call:
+glm(formula = result ~ treat * region, family = binomial, data = output_df)
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  -2.26781    0.11819 -19.188  < 2e-16 ***
+treat         0.26034    0.15946   1.633    0.103    
+region       -0.06384    0.16744  -0.381    0.703    
+treat:region  0.98170    0.21327   4.603 4.16e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 2778.2  on 3444  degrees of freedom
+Residual deviance: 2659.3  on 3441  degrees of freedom
+AIC: 2667.3
+
+Number of Fisher Scoring iterations: 5
+
+Press [Enter] to continue ...
+Likelihood-ratio test: does the treatment effect differ by region?
+Analysis of Deviance Table
+
+Model 1: result ~ treat + region
+Model 2: result ~ treat * region
+  Resid. Df Resid. Dev Df Deviance  Pr(>Chi)    
+1      3442     2680.6                          
+2      3441     2659.3  1   21.288 3.952e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Press [Enter] to continue ...
+------------------------------------------------------------ 
+Drug odds ratio within each region:
+Waiting for profiling to be done...
+Region 0 | OR: 1.3 | 95% CI: 0.95 to 1.78
+Waiting for profiling to be done...
+Region 1 | OR: 3.46 | 95% CI: 2.63 to 4.59
+Region 1 = original region 1; region 0 = original region 2 (recoded).
+Analysis complete.
+> 
